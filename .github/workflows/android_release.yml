@@ -16,8 +16,11 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: gradle
 
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+        with:
+          gradle-version: '9.2.0'
       - name: Test with Gradle
         run: gradle testDebugUnitTest
 
@@ -30,8 +33,11 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: gradle
 
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+        with:
+          gradle-version: '9.2.0'
       - name: Build with Gradle
         run: gradle assembleRelease
 
