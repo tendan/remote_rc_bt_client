@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import sh.slusa.remote_rc.core.BleConnectionManager
 import sh.slusa.remote_rc.model.ControlViewModel
-import sh.slusa.remote_rc.service.ControlSystemService
 import sh.slusa.remote_rc.service.IControlSystemService
 import sh.slusa.remote_rc.ui.component.ConnectionStatus
 import sh.slusa.remote_rc.ui.component.Controls
@@ -21,17 +20,20 @@ import sh.slusa.remote_rc.ui.theme.RemoteRobotControlTheme
 @Preview(device = "spec:orientation=landscape,width=411dp,height=891dp")
 fun PreviewMainScreen() {
     val controlSystemService = object : IControlSystemService {
-        override fun accelerate(enable: Boolean) {
+        override fun accelerate(enable: Boolean, value: Int) {
         }
 
-        override fun backward(enable: Boolean) {
+//        override fun backward(enable: Boolean) {
+//        }
+
+        override fun steer(value: Int) {
         }
 
-        override fun steerLeft(enable: Boolean) {
-        }
-
-        override fun steerRight(enable: Boolean) {
-        }
+//        override fun steerLeft(enable: Boolean) {
+//        }
+//
+//        override fun steerRight(enable: Boolean) {
+//        }
 
         override fun emergencyStop() {
         }

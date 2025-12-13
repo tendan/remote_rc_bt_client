@@ -13,6 +13,9 @@ class ControlViewModel : ViewModel() {
     private val _backwards = MutableStateFlow(false)
     val isBackwards: StateFlow<Boolean> = _backwards.asStateFlow()
 
+    private val _steer = MutableStateFlow(false)
+    val isSteeringChanged: StateFlow<Boolean> = _steer.asStateFlow()
+
     private val _steerLeft = MutableStateFlow(false)
     val isSteeringLeft: StateFlow<Boolean> = _steerLeft.asStateFlow()
 

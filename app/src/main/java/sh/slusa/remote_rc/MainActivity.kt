@@ -21,14 +21,16 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import sh.slusa.remote_rc.core.BleConnectionManager
-import sh.slusa.remote_rc.service.ControlSystemService
+import sh.slusa.remote_rc.service.BinaryControlSystemService
+import sh.slusa.remote_rc.service.LinearControlSystemService
 import sh.slusa.remote_rc.ui.screen.MainScreen
 
 class MainActivity : ComponentActivity() {
     private val TAG = "MainActivity"
 
     private lateinit var bleConnectionManager: BleConnectionManager
-    private lateinit var controlSystemService: ControlSystemService
+//    private lateinit var binaryControlSystemService: BinaryControlSystemService
+    private lateinit var linearControlSystemService: LinearControlSystemService
 
     private val requiredPermissions =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -75,7 +77,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         bleConnectionManager = BleConnectionManager(this)
-        controlSystemService = ControlSystemService(bleConnectionManager)
+        //binaryControlSystemService = BinaryControlSystemService(bleConnectionManager)
+        linearControlSystemService = LinearControlSystemService(bleConnectionManager)
 
         checkAndRequestBlePermissions()
         observeConnectionState()
@@ -83,7 +86,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val connectionState by bleConnectionManager.connectionState.collectAsState()
-            MainScreen(connectionState = connectionState, controlSystemService = controlSystemService)
+            MainScreen(connectionState = connectionState, controlSystemService = linearControlSystemService)
         }
     }
 

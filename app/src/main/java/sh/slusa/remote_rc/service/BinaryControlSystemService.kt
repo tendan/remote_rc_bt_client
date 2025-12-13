@@ -5,7 +5,8 @@ import android.util.Log
 import androidx.annotation.RequiresPermission
 import sh.slusa.remote_rc.core.BleConnectionManager
 
-class ControlSystemService (private val bleConnectionManager: BleConnectionManager) : IControlSystemService {
+// TODO: UNUSED
+class BinaryControlSystemService (private val bleConnectionManager: BleConnectionManager) : IControlSystemService {
     private val TAG: String = "ControlSystemService"
 
     private fun toByte(bool: Boolean): Byte {
@@ -13,25 +14,38 @@ class ControlSystemService (private val bleConnectionManager: BleConnectionManag
     }
 
     @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT)
-    override fun accelerate(enable: Boolean) {
+    override fun accelerate(enable: Boolean, value: Int) {
         Log.d(TAG, "Accelerating...")
         bleConnectionManager.writeDataToCharacteristic(byteArrayOf(0x0, 0x1, 0x1, toByte(enable)))
     }
 
+//    @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT)
+//    override fun backward(enable: Boolean) {
+//        Log.d(TAG, "Backwards...")
+//        bleConnectionManager.writeDataToCharacteristic(byteArrayOf(0x0, 0x1, 0x2, toByte(enable)))
+//    }
+
     @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT)
-    override fun backward(enable: Boolean) {
-        Log.d(TAG, "Backwards...")
-        bleConnectionManager.writeDataToCharacteristic(byteArrayOf(0x0, 0x1, 0x2, toByte(enable)))
+    override fun steer(value: Int) {
+        if (value > 0) {
+            Log.d(TAG, "Steering right...")
+            bleConnectionManager.writeDataToCharacteristic(byteArrayOf(0x0, 0x1, 0x3, 0x1))
+        } else if (value < 0) {
+            Log.d(TAG, "Steering left...")
+            bleConnectionManager.writeDataToCharacteristic(byteArrayOf(0x0, 0x1, 0x3, 0xFF.toByte()))
+        } else {
+            bleConnectionManager.writeDataToCharacteristic(byteArrayOf(0x0, 0x1, 0x3, 0x0))
+        }
     }
 
     @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT)
-    override fun steerLeft(enable: Boolean) {
+    private fun steerLeft(enable: Boolean) {
         Log.d(TAG, "Steering left...")
         bleConnectionManager.writeDataToCharacteristic(byteArrayOf(0x0, 0x1, 0x3, toByte(enable)))
     }
 
     @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT)
-    override fun steerRight(enable: Boolean) {
+    private fun steerRight(enable: Boolean) {
         Log.d(TAG, "Steering right...")
         bleConnectionManager.writeDataToCharacteristic(byteArrayOf(0x0, 0x1, 0x3, if (enable) { 0x2 } else { 0x0 }))
     }
